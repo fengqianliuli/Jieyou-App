@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+">
+    <!--开启包扫描，使用注解将对象注册为bean-->
+    <context:component-scan base-package="com.qdu.dao,com.qdu.service"/>
+    <!--加载属性文件-->
+    <context:property-placeholder location="classpath:properties/jdbc.properties"/>
+    <!--配置属性文件中的值（配置数据库）-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+       <property name="driverClassName" value="${jdbc.driverClass}"/>
+       <property name="url" value="${jdbc.url}"/>
+       <property name="username" value="${jdbc.username}"/>
+       <property name="password" value="${jdbc.password}"/>   
+   </bean>
+   <!--将Hibernate中的SessionFactory的属性直接交给Spring管理-->
+   <bean id="springSessionFactory"  class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+            <list>
+
+                <value>com.qdu.pojo.User</value>
+                <value>com.qdu.pojo.Secret</value>
+                <value>com.qdu.pojo.Remark</value>
+                <value>com.qdu.pojo.Problem</value>
+                <value>com.qdu.pojo.Answer</value>
+
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=${hibernate.dialect}
+                hibernate.show_sql=${hibernate.show_sql}
+                hibernate.format_sql=${hibernate.format_sql}
+            </value>
+        </property>
+    </bean>
+    
+    <!--配置事务通知-->
+    <bean id="txManager" 
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="springSessionFactory"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+    
+</beans>

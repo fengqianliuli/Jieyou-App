@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+body{
+    font-family: 微软雅黑;
+}
+
+h1{
+    color: brown;
+    text-align:center;
+}
+
+input,select{
+    padding: 5px 10px;
+    outline: none;
+    border: solid 1px lightblue;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"],a{
+    background-color: green;
+    border: none;
+    padding:10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    color:white;
+}
+
+a.register{
+    background-color: lightsalmon;
+    text-decoration: none;
+}
+
+input[type="submit"]:hover,a:hover{
+    cursor: pointer;
+    background-color: brown;
+    text-decoration: underline;
+}
+
+label{
+    font-weight: bold;
+    color: darkcyan;
+    font-size: 18px;
+}
